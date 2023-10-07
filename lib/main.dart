@@ -1,4 +1,6 @@
-import 'package:cream_soda/common/color_schemes.g.dart';
+
+import 'package:cream_soda/constants/router/move.dart';
+import 'package:cream_soda/constants/theme/color_schemes.g.dart';
 import 'package:flutter/material.dart';
 
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -16,8 +18,8 @@ class MyApp extends StatelessWidget {
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       title: 'CreamSoda',
-      // initialRoute: Move.navigationBar,
-      // routes: getRouters(),
+      initialRoute: Move.mainPage,
+      routes: getRouters(),
       theme: ThemeData(
         colorScheme: lightColorScheme,
         useMaterial3: true,
