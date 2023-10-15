@@ -15,7 +15,8 @@ class _UsePageTitleState extends State<UsePageTitleText> {
     return Text(widget.title, style: const TextStyle(
         fontSize: pageTitleFontSize,
         fontWeight: FontWeight.bold,
-        color: Colors.black)
+        color: Colors.black),
+        textAlign: TextAlign.center
     );
   }
 }

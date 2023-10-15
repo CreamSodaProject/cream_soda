@@ -25,12 +25,12 @@ class JoinPage extends StatelessWidget {
         child: Scaffold(
             resizeToAvoidBottomInset: false,
             appBar: AppBar(
-            // title: const Text("계정 등록"),
-              centerTitle: true,
-              titleTextStyle: const TextStyle(
-                  fontSize: font16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black)),
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back_ios),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),),
           body: Padding(
             padding: const EdgeInsets.symmetric(
                 vertical: defaultVerticalGap, horizontal: defaultHorizonGap),
