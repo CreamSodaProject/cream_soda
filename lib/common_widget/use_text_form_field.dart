@@ -8,7 +8,11 @@ class UseTextFormField extends StatefulWidget {
   TextInputType? keyboardType;
   String hintText;
   bool? obscureTextCheck;
+  int? maxLength;
   String? Function(String?)? validator;
+  TextInputAction? textInputAction;
+  void Function()? onEditingComplete;
+  void Function(String)? onChanged;
 
   UseTextFormField({
     required this.controller,
@@ -16,7 +20,11 @@ class UseTextFormField extends StatefulWidget {
     this.keyboardType,
     required this.hintText,
     this.validator,
+    this.maxLength,
     this.obscureTextCheck,
+    this.textInputAction,
+    this.onEditingComplete,
+    this.onChanged,
     Key? key,
   }) : super(key: key);
 
@@ -30,6 +38,10 @@ class _UseTextFormFieldState extends State<UseTextFormField> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: gap10),
       child: TextFormField(
+        onChanged: widget.onChanged ?? (value) {},
+        textInputAction: widget.textInputAction ?? TextInputAction.none,
+        maxLength: widget.maxLength ?? 100,
+        autofocus: true,
         controller: widget.controller,
         maxLines: widget.maxLines ?? 1,
         keyboardType: widget.keyboardType ?? TextInputType.text,
@@ -38,10 +50,12 @@ class _UseTextFormFieldState extends State<UseTextFormField> {
         obscureText: widget.obscureTextCheck ?? false,
         validator: widget.validator,
         decoration: InputDecoration(
+          counterText: widget.maxLength == null ? "" : null,
           hintText: widget.hintText,
           hintStyle: TextStyle(color: lightColorScheme.outline),
           focusColor: lightColorScheme.primary,
         ),
+              onEditingComplete: widget.onEditingComplete ?? () {}
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:cream_soda/common_widget/use_elevated_button.dart';
 import 'package:cream_soda/common_widget/use_page_title_text.dart';
 import 'package:cream_soda/common_widget/use_text_form_field.dart';
 import 'package:cream_soda/constants/theme/color_schemes.g.dart';
@@ -23,108 +24,72 @@ class ProfilePage extends StatelessWidget {
     final provider = context.watch<ProfileProvider>();
     final state = provider.state;
 
-    void _showDialog(Widget child) {
-      showCupertinoModalPopup<void>(
-        context: context,
-        builder: (BuildContext context) => Container(
-          height: 216,
-          padding: const EdgeInsets.only(top: 6.0),
-          // The Bottom margin is provided to align the popup above the system
-          // navigation bar.
-          margin: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
-          ),
-          // Provide a background color for the popup.
-          color: CupertinoColors.systemBackground.resolveFrom(context),
-          // Use a SafeArea widget to avoid system overlaps.
-          child: SafeArea(
-            top: false,
-            child: child,
-          ),
-        ),
-      );
-    }
-
     return SafeArea(
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(),
-          body: Column(
-            children: [
-              UsePageTitleText(title: "프로필 편집"),
-              IconButton(
-                  onPressed: () {
-                    // TODO: 프로필 이미지 변경
-                  },
-                  icon: Icon(
-                    CupertinoIcons.person_crop_circle_fill_badge_plus,
-                    size: 150,
-                    color: lightColorScheme.outline,
-                  )),
-              Form(
-                  key: state.formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            "이름",
-                            style: TextStyle(
+          body: Padding(
+            padding: const EdgeInsets.symmetric(vertical: defaultVerticalGap, horizontal: defaultHorizonGap),
+            child: Column(
+              children: [
+                UsePageTitleText(title: "프로필 편집"),
+                IconButton(
+                    onPressed: () {
+                      // TODO: 프로필 이미지 변경
+                    },
+                    icon: Icon(
+                      CupertinoIcons.person_crop_circle_fill_badge_plus,
+                      size: 150,
+                      color: lightColorScheme.outline,
+                    )),
+                Form(
+                    key: state.formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              "이름",
+                              style: TextStyle(
+                                  fontSize: font14,
+                                  color: lightColorScheme.outline,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Text("*", style: TextStyle(
                                 fontSize: font14,
-                                color: lightColorScheme.outline,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text("*", style: TextStyle(
-                              fontSize: font14,
-                              color: lightColorScheme.error,
-                              fontWeight: FontWeight.bold))
-                        ],
-                      ),
-                      UseTextFormField(
-                          controller: state.nameController,
-                          hintText: "필수",
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "이름을 입력해주세요.";
-                            }
-                            return null;
-                          }),
-                      Text("생년월일", style: TextStyle(
-                          fontSize: font14,
-                          color: lightColorScheme.outline,
-                          fontWeight: FontWeight.bold),),
-                      SizedBox(
-                        width: double.infinity,
-                        child: CupertinoButton(
-                          borderRadius: BorderRadius.circular(defaultHorizonGap),
-                          color: lightColorScheme.primary,
-                          onPressed: () => _showDialog(
-                            CupertinoDatePicker(
-                              initialDateTime: DateTime.now(),
-                              mode: CupertinoDatePickerMode.date,
-                              use24hFormat: true,
-                              showDayOfWeek: true,
-                              onDateTimeChanged: (DateTime newDate) {
-                               provider.birthDaySelect('${newDate.year}-${newDate.month}-${newDate.day}');
-                              },
-                            ),
-                          ),
-                          child: Text(
-                            state.birthDay,
-                            style: const TextStyle(
-                              fontSize: 22.0,
-                              color: CupertinoColors.white,
-                            ),
-                          ),
+                                color: lightColorScheme.error,
+                                fontWeight: FontWeight.bold))
+                          ],
                         ),
-                      ),
-                    ],
-                  ))
-            ],
+                        UseTextFormField(
+                            maxLength: 10,
+                            keyboardType: TextInputType.text,
+                            controller: state.nameController,
+                            hintText: "필수",
+                            validator: (value) {
+                              if (value == null || value.isEmpty){
+                                return "이름을 입력해주세요.";
+                              }
+                              if(!isNameValid(value)){
+                                return "이름은 2~10자로 입력해주세요.";
+                              }
+                              return null;
+                            }),
+                        UseElevatedButton(title: "등록", onPressed: (){})
+                      ],
+                    ))
+              ],
+            ),
           ),
         ));
   }
 }
 
+bool isNameValid(String password) {
+  // 정규식 패턴: 최소 8자 이상, 숫자와 특수 문자 필수 포함
+  const pattern = r'^[a-zA-Zㄱ-ㅎ|ㅏ-ㅣ|가-힣0-9]{2,10}$';
+  final regExp = RegExp(pattern);
 
+  return regExp.hasMatch(password);
+}

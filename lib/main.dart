@@ -18,7 +18,8 @@ class MyApp extends StatelessWidget {
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       title: 'CreamSoda',
-      initialRoute: Move.mainPage,
+      // initialRoute: Move.mainPage,
+        initialRoute: Move.joinPage,
       routes: getRouters(),
       theme: ThemeData(
         colorScheme: lightColorScheme,
