@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "963398264671",
+    "project_id": "creamsoda-90e75",
+    "storage_bucket": "creamsoda-90e75.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:963398264671:android:a9ad431e70d9473304b8ea",
+        "android_client_info": {
+          "package_name": "com.example.cream_soda"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVobiV_S_YIWpv8oubJF2H9yZXJpAt99Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

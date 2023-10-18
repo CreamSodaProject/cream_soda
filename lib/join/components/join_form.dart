@@ -62,7 +62,7 @@ class _JoinFormState extends State<JoinForm> {
                 }
                 provider.changeLengthInfoColor(rightColor);
 
-                if (!isPasswordValid(p0)) {
+                if (!provider.isPasswordValid(p0)) {
                   provider.changeRegInfoColor(lightColorScheme.outline);
                   return;
                 }
@@ -77,7 +77,7 @@ class _JoinFormState extends State<JoinForm> {
                   return "비밀번호는 8자 이상이어야 합니다.";
                 }
 
-                if (!isPasswordValid(value)) {
+                if (!provider.isPasswordValid(value)) {
                   return "비밀번호는 숫자, 특수 문자를 필수로 포함해야 합니다.";
                 }
 
@@ -97,11 +97,11 @@ class _JoinFormState extends State<JoinForm> {
                 }
                 return null;
               },
-            onEditingComplete: () {
-              if(widget.state.formKey.currentState!.validate()){
-                Navigator.pushNamed(context, "/joinAuth");
-              }
-            },
+            // onEditingComplete: () {
+            //   if(widget.state.formKey.currentState!.validate()){
+            //     Navigator.pushNamed(context, "/joinAuth");
+            //   }
+            // },
           ),
           const SizedBox(height: gap15),
           InfoText(title: "8자 이상 입력", color: widget.state.checkLengthColor),
@@ -110,9 +110,8 @@ class _JoinFormState extends State<JoinForm> {
           const SizedBox(height: defaultVerticalGap),
           UseElevatedButton(title: "다음", onPressed: () {
             if(widget.state.formKey.currentState!.validate()){
-              Navigator.pushNamed(context, "/joinAuth");
+              provider.sendCode(context);
             }
-
           },)
         ],
       ),
@@ -121,10 +120,3 @@ class _JoinFormState extends State<JoinForm> {
 }
 
 
-bool isPasswordValid(String password) {
-  // 정규식 패턴: 최소 8자 이상, 숫자와 특수 문자 필수 포함
-  const pattern = r'^(?=.*?[0-9])(?=.*?[!@#\$%^&*()_+{}\[\]:;<>,.?~\\-]).{8,}$';
-  final regExp = RegExp(pattern);
-
-  return regExp.hasMatch(password);
-}

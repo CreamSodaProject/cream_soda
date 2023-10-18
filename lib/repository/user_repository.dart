@@ -9,6 +9,19 @@ class UserRepository {
   var basePort = UseHttp.basePort;
   final scheme = 'http';
 
+  Future<Response> sendEmail({required String email}) async{
+    String encodedUrl = Uri(
+      scheme: scheme,
+      host: baseUrl,
+      port: basePort,
+      path: '/???', // 경로
+    ).toString();
+
+    return await post(Uri.parse(encodedUrl),
+        headers: headers,
+        body: jsonEncode({'email': email}));
+  }
+
   Future<Response> join(
       {required String email, required String password}) async {
     String encodedUrl = Uri(

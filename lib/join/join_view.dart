@@ -6,9 +6,14 @@ import 'package:provider/provider.dart';
 
 import 'join_provider.dart';
 
-class JoinPage extends StatelessWidget {
+class JoinPage extends StatefulWidget {
   const JoinPage({super.key});
 
+  @override
+  State<JoinPage> createState() => _JoinPageState();
+}
+
+class _JoinPageState extends State<JoinPage> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
