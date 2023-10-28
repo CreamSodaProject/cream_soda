@@ -1,32 +1,40 @@
+import 'package:cream_soda/common_widget/use_elevated_button.dart';
 import 'package:cream_soda/common_widget/use_page_title_text.dart';
+import 'package:cream_soda/constants/enum/code_status_enum.dart';
 import 'package:cream_soda/constants/theme/color_schemes.g.dart';
+import 'package:cream_soda/constants/theme/use_size.dart';
+import 'package:cream_soda/join_auth/components/code_form.dart';
 import 'package:flutter/material.dart';
-import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
+
 import 'join_auth_provider.dart';
 
 class JoinAuthPage extends StatefulWidget {
 
-  const JoinAuthPage({super.key});
+
+   JoinAuthPage({super.key});
 
   @override
   State<JoinAuthPage> createState() => _JoinAuthPageState();
 }
+
 // TODO : 코드 보내지는 거 보고 수정해야 함~
 class _JoinAuthPageState extends State<JoinAuthPage> {
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-          create: (BuildContext context) => JoinAuthProvider(),
-          builder: (context, child) =>  _buildPage(context),
+      create: (BuildContext context) => JoinAuthProvider()..init(),
+      builder: (context, child) => _buildPage(context),
     );
   }
 
   Widget _buildPage(BuildContext context) {
-    final provider = context.read<JoinAuthProvider>();
+    final provider = context.watch<JoinAuthProvider>();
     final state = provider.state;
 
-    return SafeArea(child: Scaffold(
+    return SafeArea(
+        child: Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
@@ -35,68 +43,60 @@ class _JoinAuthPageState extends State<JoinAuthPage> {
           },
         ),
       ),
-      body: Column(
-        children: [
-          UsePageTitleText(title: "계정 인증"),
-          const Text("이메일로 인증번호를 보냈습니다.\n인증번호를 입력해주세요."),
-          Form(
-            key: state.formKey,
-            child: Directionality(
-              // Specify direction if desired
-              textDirection: TextDirection.ltr,
-              child: Pinput(
-                autofocus: true,
-                length: 5,
-                controller: state.pinController,
-                focusNode: state.focusNode,
-                androidSmsAutofillMethod:
-                AndroidSmsAutofillMethod.smsUserConsentApi,
-                listenForMultipleSmsOnAndroid: true,
-                defaultPinTheme: state.defaultPinTheme,
-                validator: (value) {
-                 // return value == widget.pin ? null : '비밀번호가 일치하지 않습니다.';
-                },
-                hapticFeedbackType: HapticFeedbackType.lightImpact,
-                onCompleted: (pin) {
-
-                },
-                cursor: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(bottom: 9),
-                      width: 22,
-                      height: 1,
-                      color: lightColorScheme.primary,
-                    ),
-                  ],
-                ),
-                focusedPinTheme: state.defaultPinTheme.copyWith(
-                  decoration: state.defaultPinTheme.decoration!.copyWith(
-                    borderRadius: BorderRadius.circular(19),
-                    border:
-                    Border.all(color: lightColorScheme.primary),
-                  ),
-                ),
-                submittedPinTheme: state.defaultPinTheme.copyWith(
-                  decoration: state.defaultPinTheme.decoration!.copyWith(
-                    color: lightColorScheme.primary,
-                    borderRadius: BorderRadius.circular(19),
-                    border:
-                    Border.all(color: lightColorScheme.primary),
-                  ),
-                ),
-                errorPinTheme: state.defaultPinTheme.copyBorderWith(
-                  border: Border.all(color: lightColorScheme.error),
-                ),
+      body: Container(
+        alignment: Alignment.center,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+              vertical: defaultVerticalGap, horizontal: defaultHorizonGap),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              UsePageTitleText(title: "계정 인증"),
+              const SizedBox(
+                height: gap35,
               ),
-            ),
+              const Text("이메일로 인증번호를 보냈습니다.\n인증번호를 입력해주세요.", textAlign: TextAlign.center,),
+              const SizedBox(
+                height: gap35,
+              ),
+              CodeForm(),
+              const SizedBox(
+                height: gap10,
+              ),
+              Text(
+                '${provider.state.duration.inMinutes.remainder(60)}:${provider.state.duration.inSeconds.remainder(60)}',
+                style: TextStyle(color: lightColorScheme.error),
+              ),
+              const SizedBox(
+                height: gap10,
+              ),
+              if(state.verified == CodeStatusEnum.FAIL)
+                 Padding(
+                   padding: const EdgeInsets.only(top : gap10),
+                   child: Text('인증이 실패하였습니다.',
+                      style: TextStyle(color: lightColorScheme.error)),
+                 ),
+              const SizedBox(
+                height: gap10,
+              ),
+              UseElevatedButton(
+                title: "재전송",
+                onPressed: () {
+                  provider.resetCountdown();
+                  provider.startCountdown();
+                  // TODO: 통신 추가
+                },
+                width: 100,
+              )
+            ],
           ),
-        ],
+        ),
       ),
     ));
     // return Container(
     //   child: Text("JoinAuthPage", style: TextStyle(color: Colors.white)),
     // );
   }
+
+
 }

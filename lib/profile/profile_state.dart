@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfileState {
 
@@ -8,5 +9,11 @@ class ProfileState {
 
   final formKey = GlobalKey<FormState>();
   TextEditingController nameController = TextEditingController();
-  String birthDay = "";
+  var email = '';
+  var password = '';
+
+  XFile? image;
+  final ImagePicker picker = ImagePicker();
+  bool existPhoto = false;
+
 }

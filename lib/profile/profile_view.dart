@@ -1,3 +1,4 @@
+import 'package:cream_soda/common_widget/picture_action_sheet.dart';
 import 'package:cream_soda/common_widget/use_elevated_button.dart';
 import 'package:cream_soda/common_widget/use_page_title_text.dart';
 import 'package:cream_soda/common_widget/use_text_form_field.dart';
@@ -5,12 +6,20 @@ import 'package:cream_soda/constants/theme/color_schemes.g.dart';
 import 'package:cream_soda/constants/theme/use_size.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import 'profile_provider.dart';
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+class ProfilePage extends StatefulWidget {
+
+  ProfilePage({super.key});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +42,18 @@ class ProfilePage extends StatelessWidget {
             child: Column(
               children: [
                 UsePageTitleText(title: "프로필 편집"),
+
                 IconButton(
                     onPressed: () {
-                      // TODO: 프로필 이미지 변경
+                      showCupertinoModalPopup<void>(
+                        context: context,
+                        builder: (BuildContext context) => PictureActionSheet(
+                          existPhoto: state.existPhoto,
+                          cameraClick: () => provider.getImage(ImageSource.camera),
+                          galleryClick: () => provider.getImage(ImageSource.gallery),
+                          deleteClick: () => provider.deletePhoto(),
+                        ),
+                      );
                     },
                     icon: Icon(
                       CupertinoIcons.person_crop_circle_fill_badge_plus,
@@ -71,12 +89,14 @@ class ProfilePage extends StatelessWidget {
                               if (value == null || value.isEmpty){
                                 return "이름을 입력해주세요.";
                               }
-                              if(!isNameValid(value)){
+                              if(!provider.isNameValid(value)){
                                 return "이름은 2~10자로 입력해주세요.";
                               }
                               return null;
                             }),
-                        UseElevatedButton(title: "등록", onPressed: (){})
+                        UseElevatedButton(title: "등록", onPressed: (){
+
+                        })
                       ],
                     ))
               ],
@@ -86,10 +106,4 @@ class ProfilePage extends StatelessWidget {
   }
 }
 
-bool isNameValid(String password) {
-  // 정규식 패턴: 최소 8자 이상, 숫자와 특수 문자 필수 포함
-  const pattern = r'^[a-zA-Zㄱ-ㅎ|ㅏ-ㅣ|가-힣0-9]{2,10}$';
-  final regExp = RegExp(pattern);
 
-  return regExp.hasMatch(password);
-}
