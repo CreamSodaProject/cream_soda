@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cream_soda/common_widget/picture_action_sheet.dart';
 import 'package:cream_soda/common_widget/use_elevated_button.dart';
 import 'package:cream_soda/common_widget/use_page_title_text.dart';
@@ -42,7 +44,8 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Column(
               children: [
                 UsePageTitleText(title: "프로필 편집"),
-
+                state.image == null
+                    ?
                 IconButton(
                     onPressed: () {
                       showCupertinoModalPopup<void>(
@@ -59,7 +62,24 @@ class _ProfilePageState extends State<ProfilePage> {
                       CupertinoIcons.person_crop_circle_fill_badge_plus,
                       size: 150,
                       color: lightColorScheme.outline,
-                    )),
+                    ))
+                : InkWell(child:
+                Image.file(
+                  state.image! as File,
+                  width: 150,
+                  height: 150,
+                ),
+                onTap: () {
+                  showCupertinoModalPopup<void>(
+                    context: context,
+                    builder: (BuildContext context) => PictureActionSheet(
+                      existPhoto: state.existPhoto,
+                      cameraClick: () => provider.getImage(ImageSource.camera),
+                      galleryClick: () => provider.getImage(ImageSource.gallery),
+                      deleteClick: () => provider.deletePhoto(),
+                    ),
+                  );
+                },),
                 Form(
                     key: state.formKey,
                     child: Column(
@@ -95,7 +115,10 @@ class _ProfilePageState extends State<ProfilePage> {
                               return null;
                             }),
                         UseElevatedButton(title: "등록", onPressed: (){
-
+                          if(state.formKey.currentState!.validate()){
+                            // TODO : 서버에 프로필 정보 전송
+                            Navigator.popAndPushNamed(context, "");
+                          }
                         })
                       ],
                     ))

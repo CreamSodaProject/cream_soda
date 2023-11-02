@@ -12,7 +12,7 @@ import 'join_auth_provider.dart';
 class JoinAuthPage extends StatefulWidget {
 
 
-   JoinAuthPage({super.key});
+   const JoinAuthPage({super.key});
 
   @override
   State<JoinAuthPage> createState() => _JoinAuthPageState();

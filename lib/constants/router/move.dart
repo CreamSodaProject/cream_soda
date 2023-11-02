@@ -1,6 +1,7 @@
 
 import 'package:cream_soda/join/join_view.dart';
 import 'package:cream_soda/join_auth/join_auth_view.dart';
+import 'package:cream_soda/login/login_view.dart';
 import 'package:cream_soda/main/main_view.dart';
 import 'package:cream_soda/profile/profile_view.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,8 @@ class Move {
   static String joinPage = "/join";
   static String joinAuthPage = "/joinAuth";
   static String profilePage = "/profile";
+  static String loginPage = "/login";
+
 }
 
 Map<String, Widget Function(BuildContext)> getRouters(){
@@ -18,6 +21,8 @@ Map<String, Widget Function(BuildContext)> getRouters(){
     Move.joinPage: (context) => JoinPage(),
     Move.joinAuthPage: (context) => JoinAuthPage(),
     Move.profilePage: (context) => ProfilePage(),
+    Move.loginPage: (context) => LoginPage(),
+
 
   };
 }
