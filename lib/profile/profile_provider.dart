@@ -62,7 +62,13 @@ class ProfileProvider extends ChangeNotifier {
 
     var responseBody = jsonDecode(response.body);
     if (response.statusCode == 200) {
-      Navigator.popAndPushNamed(context, "/login");
+      showDialog(
+        context: context,
+        builder: (context) => UseConfirmDialog(
+            title: "회원가입 성공",
+            content: "회원가입에 성공하였습니다.",
+            onPressed: () => Navigator.popAndPushNamed(context, "/login")),
+      );
     } else {
       showDialog(
         context: context,
