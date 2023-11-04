@@ -53,19 +53,21 @@ class JoinAuthProvider extends ChangeNotifier {
     if (response.statusCode == 200) {
       showDialog(
         context: context,
-        builder: (context) => UseConfirmDialog(
-          title: "전송 완료",
-          content: "코드 재전송이 완료되었습니다.",
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+        builder: (context) =>
+            UseConfirmDialog(
+              title: "전송 완료",
+              content: "코드 재전송이 완료되었습니다.",
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
       );
     } else {
       var detail = responseBody['detail'];
       showDialog<String>(
           context: context,
-          builder: (BuildContext context) => UseConfirmDialog(
+          builder: (BuildContext context) =>
+              UseConfirmDialog(
                 title: "전송 실패",
                 content: detail ?? "코드 재전송이 완료되었습니다. 관리자에게 문의하세요",
                 onPressed: () {
@@ -75,15 +77,21 @@ class JoinAuthProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> sendCode() async{
-    var response = await repository.sendCode(email: state.email, code: state.pinController.text);
+  Future<void> sendCode(BuildContext context, String pin) async {
+    var response = await repository.sendCode(
+        email: state.email, code: pin);
     var responseBody = jsonDecode(response.body);
 
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       state.verified = CodeStatusEnum.SUCCESS;
       notifyListeners();
-
+      Navigator.pushNamed(context, "/profile", arguments: {
+        'email': state.email,
+        'password': state.password
+      });
+    } else {
+      state.verified = CodeStatusEnum.FAIL;
+      notifyListeners();
+    }
   }
-
-
 }

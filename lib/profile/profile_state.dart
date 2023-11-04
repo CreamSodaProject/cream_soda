@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -13,6 +15,7 @@ class ProfileState {
   var password = '';
 
   XFile? image;
+  File? imageFile;
   final ImagePicker picker = ImagePicker();
   bool existPhoto = false;
 

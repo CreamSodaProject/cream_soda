@@ -1,3 +1,9 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:cream_soda/common_widget/use_confirm_dialog.dart';
+import 'package:cream_soda/repository/user_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -6,18 +12,27 @@ import 'profile_state.dart';
 
 class ProfileProvider extends ChangeNotifier {
   final state = ProfileState();
+  final repository = UserRepository();
+
+  void init(String? email, String? password) {
+    state.email = email ?? "";
+    state.password = password ?? "";
+  }
 
   Future getImage(ImageSource imageSource) async {
     final XFile? pickedFile = await state.picker.pickImage(source: imageSource);
     if (pickedFile != null) {
-      state.image = XFile(pickedFile.path);
+      //   state.image = XFile(pickedFile.path);
+      state.imageFile = File(pickedFile.path);
       state.existPhoto = true;
+
       notifyListeners();
     }
   }
 
   void deletePhoto() {
-    state.image = null;
+    // state.image = null;
+    state.imageFile = null;
     state.existPhoto = false;
     notifyListeners();
   }
@@ -28,5 +43,34 @@ class ProfileProvider extends ChangeNotifier {
     final regExp = RegExp(pattern);
 
     return regExp.hasMatch(password);
+  }
+
+  Future<void> join(BuildContext context) async {
+    String base64string = "";
+
+    if (state.imageFile != null) {
+      Uint8List imageBytes = await state.imageFile!.readAsBytes();
+      base64string = base64.encode(imageBytes);
+    }
+
+    var response = await repository.join(
+      email: state.email,
+      password: state.password,
+      name: state.nameController.text,
+      imageFile: base64string,
+    );
+
+    var responseBody = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      Navigator.popAndPushNamed(context, "/login");
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) => UseConfirmDialog(
+            title: "회원가입 실패",
+            content: responseBody['detail'],
+            onPressed: () => Navigator.pop(context)),
+      );
+    }
   }
 }

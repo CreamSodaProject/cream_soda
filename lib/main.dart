@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'CreamSoda',
       // initialRoute: Move.mainPage,
-         initialRoute: Move.joinPage,
+         initialRoute: Move.profilePage,
       routes: getRouters(),
       theme: ThemeData(
         colorScheme: lightColorScheme,

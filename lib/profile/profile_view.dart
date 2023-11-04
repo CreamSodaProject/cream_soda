@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:cream_soda/common_widget/picture_action_sheet.dart';
+import 'package:cream_soda/common_widget/use_alert_dialog.dart';
 import 'package:cream_soda/common_widget/use_elevated_button.dart';
+import 'package:cream_soda/common_widget/use_outlined_button.dart';
 import 'package:cream_soda/common_widget/use_page_title_text.dart';
 import 'package:cream_soda/common_widget/use_text_form_field.dart';
 import 'package:cream_soda/constants/theme/color_schemes.g.dart';
@@ -14,19 +16,21 @@ import 'package:provider/provider.dart';
 import 'profile_provider.dart';
 
 class ProfilePage extends StatefulWidget {
+  String? email;
+  String? password;
 
-  ProfilePage({super.key});
+  ProfilePage({this.email, this.password, super.key});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (BuildContext context) => ProfileProvider(),
+      create: (BuildContext context) =>
+          ProfileProvider()..init(widget.email, widget.password),
       builder: (context, child) => _buildPage(context),
     );
   }
@@ -37,24 +41,26 @@ class _ProfilePageState extends State<ProfilePage> {
 
     return SafeArea(
         child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          appBar: AppBar(),
-          body: Padding(
-            padding: const EdgeInsets.symmetric(vertical: defaultVerticalGap, horizontal: defaultHorizonGap),
-            child: Column(
-              children: [
-                UsePageTitleText(title: "프로필 편집"),
-                const SizedBox(height: gap35),
-                state.image == null
-                    ?
-                IconButton(
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(
+            vertical: defaultVerticalGap, horizontal: defaultHorizonGap),
+        child: Column(
+          children: [
+            UsePageTitleText(title: "프로필 편집"),
+            const SizedBox(height: gap35),
+            state.imageFile == null
+                ? IconButton(
                     onPressed: () {
                       showCupertinoModalPopup<void>(
                         context: context,
                         builder: (BuildContext context) => PictureActionSheet(
                           existPhoto: state.existPhoto,
-                          cameraClick: () => provider.getImage(ImageSource.camera),
-                          galleryClick: () => provider.getImage(ImageSource.gallery),
+                          cameraClick: () =>
+                              provider.getImage(ImageSource.camera),
+                          galleryClick: () =>
+                              provider.getImage(ImageSource.gallery),
                           deleteClick: () => provider.deletePhoto(),
                         ),
                       );
@@ -64,70 +70,96 @@ class _ProfilePageState extends State<ProfilePage> {
                       size: 150,
                       color: lightColorScheme.outline,
                     ))
-                : InkWell(child:
-                Image.file(
-                  state.image! as File,
-                  width: 150,
-                  height: 150,
-                ),
-                onTap: () {
-                  showCupertinoModalPopup<void>(
-                    context: context,
-                    builder: (BuildContext context) => PictureActionSheet(
-                      existPhoto: state.existPhoto,
-                      cameraClick: () => provider.getImage(ImageSource.camera),
-                      galleryClick: () => provider.getImage(ImageSource.gallery),
-                      deleteClick: () => provider.deletePhoto(),
+                : InkWell(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: Image.file(
+                        state.imageFile!,
+                        width: 150,
+                        height: 150,
+                        fit: BoxFit.fill,
+                      ),
                     ),
-                  );
-                },),
-                Form(
-                    key: state.formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    onTap: () {
+                      showCupertinoModalPopup<void>(
+                        context: context,
+                        builder: (BuildContext context) => PictureActionSheet(
+                          existPhoto: state.existPhoto,
+                          cameraClick: () =>
+                              provider.getImage(ImageSource.camera),
+                          galleryClick: () =>
+                              provider.getImage(ImageSource.gallery),
+                          deleteClick: () => provider.deletePhoto(),
+                        ),
+                      );
+                    },
+                  ),
+            Form(
+                key: state.formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
                       children: [
-                        Row(
-                          children: [
-                            Text(
-                              "이름",
-                              style: TextStyle(
-                                  fontSize: font14,
-                                  color: lightColorScheme.outline,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Text("*", style: TextStyle(
+                        Text(
+                          "이름",
+                          style: TextStyle(
+                              fontSize: font14,
+                              color: lightColorScheme.outline,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Text("*",
+                            style: TextStyle(
                                 fontSize: font14,
                                 color: lightColorScheme.error,
                                 fontWeight: FontWeight.bold))
-                          ],
-                        ),
-                        UseTextFormField(
-                            maxLength: 10,
-                            keyboardType: TextInputType.text,
-                            controller: state.nameController,
-                            hintText: "필수",
-                            validator: (value) {
-                              if (value == null || value.isEmpty){
-                                return "이름을 입력해주세요.";
-                              }
-                              if(!provider.isNameValid(value)){
-                                return "이름은 2~10자로 입력해주세요.";
-                              }
-                              return null;
-                            }),
-                        UseElevatedButton(title: "등록", onPressed: (){
-                          if(state.formKey.currentState!.validate()){
-                            // TODO : 서버에 프로필 정보 전송
-                            Navigator.popAndPushNamed(context, "");
-                          }
-                        })
                       ],
-                    ))
-              ],
-            ),
-          ),
-        ));
+                    ),
+                    UseTextFormField(
+                        maxLength: 10,
+                        keyboardType: TextInputType.text,
+                        controller: state.nameController,
+                        hintText: "필수",
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "이름을 입력해주세요.";
+                          }
+                          if (!provider.isNameValid(value)) {
+                            return "이름은 2~10자로 입력해주세요.";
+                          }
+                          return null;
+                        }),
+                    UseElevatedButton(
+                      title: "등록",
+                      onPressed: () {
+                        if (state.formKey.currentState!.validate()) {
+                          provider.join(context);
+                        }
+                      },
+                    ),
+                    UseOutlinedButton(
+                        title: "취소",
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) => UseAlertDialog(
+                                    title: "등록을 취소하시겠습니까?",
+                                    content: "기입한 정보가 모두 사라집니다.",
+                                    confirmFunction: () {
+                                      Navigator.pop(context);
+                                      Navigator.popAndPushNamed(
+                                          context, '/main');
+                                    },
+                                    cancelFunction: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ));
+                        }),
+                  ],
+                ))
+          ],
+        ),
+      ),
+    ));
   }
 }
-
-

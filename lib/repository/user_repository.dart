@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:cream_soda/constants/http_setting/use_http.dart';
 import 'package:http/http.dart';
@@ -32,11 +33,11 @@ class UserRepository {
 
     return await post(Uri.parse(encodedUrl),
         headers: headers,
-        body: jsonEncode({'email': email, 'check': code, 'time' : DateTime.now()}));
+        body: jsonEncode({'email': email, 'check': code}));
   }
 
   Future<Response> join(
-      {required String email, required String password}) async {
+      {required String email, required String password, required String name, String? imageFile}) async {
     String encodedUrl = Uri(
       scheme: scheme,
       host: baseUrl,
@@ -45,6 +46,6 @@ class UserRepository {
     ).toString();
     return await post(Uri.parse(encodedUrl),
         headers: headers,
-        body: jsonEncode({'email': email, 'password': password}));
+        body: jsonEncode({'email': email, 'password': password, 'name': name, 'imageFile': imageFile}));
   }
 }

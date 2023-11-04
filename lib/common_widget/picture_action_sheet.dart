@@ -13,29 +13,39 @@ class PictureActionSheet extends StatefulWidget {
 }
 
 class _PictureActionSheetState extends State<PictureActionSheet> {
+  ScrollController controller = ScrollController();
   @override
   Widget build(BuildContext context) {
     return CupertinoActionSheet(
+      actionScrollController: controller,
       title: const Text('사진 선택'),
       actions: <CupertinoActionSheetAction>[
         CupertinoActionSheetAction(
           isDefaultAction: true,
-          onPressed: widget.cameraClick,
+          onPressed: () {
+            widget.cameraClick();
+            Navigator.pop(context);
+          },
           child: const Text('카메라'),
         ),
         CupertinoActionSheetAction(
-          onPressed: widget.galleryClick,
+          onPressed: () {
+            widget.galleryClick();
+            Navigator.pop(context);
+          },
           child: const Text('앨범'),
         ),
         if(widget.existPhoto)
         CupertinoActionSheetAction(
           isDestructiveAction: true,
-          onPressed: widget.deleteClick,
+          onPressed: () {
+            widget.deleteClick();
+            Navigator.pop(context);
+          },
           child: const Text('삭제'),
         ),
       ],
       cancelButton: CupertinoActionSheetAction(
-        isDestructiveAction: true,
         onPressed: () {
           Navigator.pop(context);
         },

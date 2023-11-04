@@ -1,4 +1,5 @@
 
+import 'package:cream_soda/create_calendar/create_calendar_view.dart';
 import 'package:cream_soda/join/join_view.dart';
 import 'package:cream_soda/join_auth/join_auth_view.dart';
 import 'package:cream_soda/login/login_view.dart';
@@ -13,6 +14,7 @@ class Move {
   static String joinAuthPage = "/joinAuth";
   static String profilePage = "/profile";
   static String loginPage = "/login";
+  static String createCalendarPage = "/createCalendar";
   static String sparePasswordPage = "/sparePassword";
 
 }
@@ -24,6 +26,8 @@ Map<String, Widget Function(BuildContext)> getRouters(){
     Move.joinAuthPage: (context) => JoinAuthPage(),
     Move.profilePage: (context) => ProfilePage(),
     Move.loginPage: (context) => LoginPage(),
+    Move.createCalendarPage: (context) => CreateCalendarPage(),
     Move.sparePasswordPage: (context) => SparePasswordPage(),
+
   };
 }
