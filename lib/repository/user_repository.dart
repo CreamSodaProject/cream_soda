@@ -5,7 +5,7 @@ import 'package:http/http.dart';
 
 class UserRepository {
   var baseUrl = UseHttp.baseUrl;
-  var headers = UseHttp.getJsonTypeHeader();
+  var headers = UseHttp.getJsonTypeAcceptHeader();
   var basePort = UseHttp.basePort;
   final scheme = 'http';
 
@@ -14,12 +14,25 @@ class UserRepository {
       scheme: scheme,
       host: baseUrl,
       port: basePort,
-      path: '/???', // 경로
+      path: 'send/email', // 경로
     ).toString();
 
     return await post(Uri.parse(encodedUrl),
         headers: headers,
         body: jsonEncode({'email': email}));
+  }
+
+  Future<Response> sendCode({required String email, required String code}) async{
+    String encodedUrl = Uri(
+      scheme: scheme,
+      host: baseUrl,
+      port: basePort,
+      path: 'send/check', // 경로
+    ).toString();
+
+    return await post(Uri.parse(encodedUrl),
+        headers: headers,
+        body: jsonEncode({'email': email, 'check': code, 'time' : DateTime.now()}));
   }
 
   Future<Response> join(

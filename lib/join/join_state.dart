@@ -13,4 +13,18 @@ class JoinState {
 
   Color checkLengthColor = lightColorScheme.outline;
   Color checkRegColor = lightColorScheme.outline;
+
+  bool emailOnTapCheck = false;
+  bool passwordOnTapCheck = false;
+  bool passwordCheckOnTapCheck = false;
+
+  bool passwordObscureTextCheck = true;
+  bool passwordCheckObscureTextCheck = true;
+
+  Color emailIconColor = lightColorScheme.outline;
+  Color passwordIconColor = lightColorScheme.outline;
+  Color passwordCheckIconColor = lightColorScheme.outline;
+
+  IconData passwordIcon =  Icons.visibility_off;
+  IconData passwordCheckIcon =  Icons.visibility_off;
 }

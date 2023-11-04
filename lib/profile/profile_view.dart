@@ -44,6 +44,7 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Column(
               children: [
                 UsePageTitleText(title: "프로필 편집"),
+                const SizedBox(height: gap35),
                 state.image == null
                     ?
                 IconButton(

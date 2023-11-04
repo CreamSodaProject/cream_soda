@@ -1,6 +1,6 @@
 class UseHttp {
 
-  static const String _baseUrl = "tt";
+  static const String _baseUrl = "13.209.129.197";
   static const int basePort = 8080;
   static const String _contentType = "application/json; charset=utf-8";
 

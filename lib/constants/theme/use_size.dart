@@ -17,3 +17,10 @@ const gap25 = 25.0;
 const gap30 = 30.0;
 const gap35 = 35.0;
 const gap40 = 40.0;
+
+const size12 = 12.0;
+const size14 = 14.0;
+const size16 = 16.0;
+const size18 = 18.0;
+const size20 = 20.0;
+const size22 = 22.0;

@@ -33,6 +33,7 @@ class _CodeFormState extends State<CodeForm> {
           defaultPinTheme: state.defaultPinTheme,
           hapticFeedbackType: HapticFeedbackType.lightImpact,
           onCompleted: (pin) {
+            // 통신
              Navigator.popAndPushNamed(context, "/profile", arguments: {
                'email' : state.email,
                'password' : state.password

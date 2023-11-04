@@ -1,3 +1,4 @@
+import 'package:cream_soda/common_widget/use_elevated_button.dart';
 import 'package:cream_soda/constants/theme/color_schemes.g.dart';
 import 'package:cream_soda/constants/theme/use_size.dart';
 import 'package:cream_soda/join/components/join_form.dart';
@@ -33,7 +34,7 @@ class _JoinPageState extends State<JoinPage> {
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back_ios),
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.popAndPushNamed(context, "/main");
                 },
               ),),
           body: Padding(
@@ -50,8 +51,7 @@ class _JoinPageState extends State<JoinPage> {
                       const Text("계정이 있으신가요?"),
                       TextButton(
                         onPressed: () {
-                          Navigator.pop(context);
-                          // TODO : 로그인 페이지로 이동 추가
+                          provider.goLogin(context);
                         },
                         child: Text("로그인",
                             style: TextStyle(color: lightColorScheme.primary)),

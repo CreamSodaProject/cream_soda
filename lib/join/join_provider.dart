@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cream_soda/common_widget/use_confirm_dialog.dart';
 import 'package:cream_soda/repository/user_repository.dart';
 import 'package:flutter/material.dart';
 
@@ -29,25 +30,74 @@ class JoinProvider extends ChangeNotifier {
   }
 
   Future<void> sendCode(BuildContext context) async {
-
     var response =
         await repository.sendEmail(email: state.addressController.text);
 
-    if(!context.mounted) return;
+    var responseBody = jsonDecode(response.body);
+
+    if (!context.mounted) return;
 
     if (response.statusCode == 200) {
-      var jsonResponse = jsonDecode(response.body);
-      var verified = jsonResponse['verified'];
-
-      // Navigator.pushNamed(context, "/joinAuth", arguments: {
-      //   'verified' : verified ?? '',
-      //   'email' : state.addressController.text,
-      //   'password' : state.passwordController.text
-      // });
-
-      Navigator.pushNamed(context, "/joinAuth");
-    } else if (response.statusCode == 401 || response.statusCode == 403) {
-      // TODO : 에러 처리
+      Navigator.pushNamed(context, "/joinAuth", arguments: {
+        'email': state.addressController.text,
+        'password': state.passwordController.text
+      });
+    } else {
+      print("object : ${responseBody['code']}");
+      var detail = responseBody['detail'];
+      showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => UseConfirmDialog(
+                title: "회원가입 실패",
+                content: detail ?? "회원가입에 실패했습니다.",
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ));
     }
+  }
+
+  void changeEmailIconColor(color) {
+    state.emailIconColor = color;
+    notifyListeners();
+  }
+
+  void changePasswordIconColor(color) {
+    state.passwordIconColor = color;
+    notifyListeners();
+  }
+
+  void changePasswordCheckIconColor(color) {
+    state.passwordCheckIconColor = color;
+    notifyListeners();
+  }
+
+  void changePasswordIcon(icon) {
+    state.passwordIcon = icon;
+    notifyListeners();
+  }
+
+  void changePasswordCheckIcon(icon) {
+    state.passwordCheckIcon = icon;
+    notifyListeners();
+  }
+
+  void changeEmailOnTapCheck(bool value) {
+    state.emailOnTapCheck = value;
+    notifyListeners();
+  }
+
+  void changePasswordOnTapCheck(bool value) {
+    state.passwordOnTapCheck = value;
+    notifyListeners();
+  }
+
+  void changePasswordCheckOnTapCheck(bool value) {
+    state.passwordCheckOnTapCheck = value;
+    notifyListeners();
+  }
+
+  void goLogin(BuildContext context) {
+    Navigator.pushNamed(context, "/login");
   }
 }

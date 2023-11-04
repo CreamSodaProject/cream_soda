@@ -13,6 +13,9 @@ class UseTextFormField extends StatefulWidget {
   TextInputAction? textInputAction;
   void Function()? onEditingComplete;
   void Function(String)? onChanged;
+  Icon? suffixIcon;
+  VoidCallback? suffixIconOnPressed;
+  VoidCallback? onTap;
 
   UseTextFormField({
     required this.controller,
@@ -25,6 +28,9 @@ class UseTextFormField extends StatefulWidget {
     this.textInputAction,
     this.onEditingComplete,
     this.onChanged,
+    this.suffixIcon,
+    this.suffixIconOnPressed,
+    this.onTap,
     Key? key,
   }) : super(key: key);
 
@@ -38,24 +44,31 @@ class _UseTextFormFieldState extends State<UseTextFormField> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: gap10),
       child: TextFormField(
-        onChanged: widget.onChanged ?? (value) {},
-        textInputAction: widget.textInputAction ?? TextInputAction.none,
-        maxLength: widget.maxLength ?? 100,
-        autofocus: true,
-        controller: widget.controller,
-        maxLines: widget.maxLines ?? 1,
-        keyboardType: widget.keyboardType ?? TextInputType.text,
-        cursorColor: lightColorScheme.primary,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        obscureText: widget.obscureTextCheck ?? false,
-        validator: widget.validator,
-        decoration: InputDecoration(
-          counterText: widget.maxLength == null ? "" : null,
-          hintText: widget.hintText,
-          hintStyle: TextStyle(color: lightColorScheme.outline),
-          focusColor: lightColorScheme.primary,
-        ),
-              onEditingComplete: widget.onEditingComplete ?? () {}
+          onChanged: widget.onChanged ?? (value) {},
+          textInputAction: widget.textInputAction ?? TextInputAction.none,
+          maxLength: widget.maxLength ?? 100,
+          autofocus: true,
+          controller: widget.controller,
+          maxLines: widget.maxLines ?? 1,
+          keyboardType: widget.keyboardType ?? TextInputType.text,
+          cursorColor: lightColorScheme.primary,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          obscureText: widget.obscureTextCheck ?? false,
+          validator: widget.validator,
+          decoration: InputDecoration(
+            counterText: widget.maxLength == null ? "" : null,
+            hintText: widget.hintText,
+            hintStyle: TextStyle(color: lightColorScheme.outline),
+            focusColor: lightColorScheme.primary,
+            suffixIcon: widget.suffixIcon != null
+                ? GestureDetector(
+                    onTap: widget.suffixIconOnPressed ?? () {},
+                    child: widget.suffixIcon,
+                  )
+                : null,
+          ),
+          onEditingComplete: widget.onEditingComplete ?? () {},
+          onTap: widget.onTap ?? () {},
       ),
     );
   }

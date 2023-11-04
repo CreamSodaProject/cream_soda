@@ -10,9 +10,10 @@ import 'package:provider/provider.dart';
 import 'join_auth_provider.dart';
 
 class JoinAuthPage extends StatefulWidget {
+  String? email;
+  String? password;
 
-
-   const JoinAuthPage({super.key});
+  JoinAuthPage({ this.email, this.password, super.key});
 
   @override
   State<JoinAuthPage> createState() => _JoinAuthPageState();
@@ -24,7 +25,7 @@ class _JoinAuthPageState extends State<JoinAuthPage> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (BuildContext context) => JoinAuthProvider()..init(),
+      create: (BuildContext context) => JoinAuthProvider()..init(widget.email, widget.password),
       builder: (context, child) => _buildPage(context),
     );
   }
@@ -84,7 +85,7 @@ class _JoinAuthPageState extends State<JoinAuthPage> {
                 onPressed: () {
                   provider.resetCountdown();
                   provider.startCountdown();
-                  // TODO: 통신 추가
+                  provider.sendEmail(context);
                 },
                 width: 100,
               )
