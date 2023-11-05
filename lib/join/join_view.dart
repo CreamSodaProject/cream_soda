@@ -1,4 +1,3 @@
-import 'package:cream_soda/common_widget/use_elevated_button.dart';
 import 'package:cream_soda/constants/router/move.dart';
 import 'package:cream_soda/constants/theme/color_schemes.g.dart';
 import 'package:cream_soda/constants/theme/use_size.dart';
@@ -25,7 +24,6 @@ class _JoinPageState extends State<JoinPage> {
   }
 
   Widget _buildPage(BuildContext context) {
-    final provider = context.watch<JoinProvider>();
 
     return SafeArea(
         child: Scaffold(

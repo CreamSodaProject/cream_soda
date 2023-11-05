@@ -1,12 +1,10 @@
 import 'package:cream_soda/common_widget/use_elevated_button.dart';
 import 'package:cream_soda/common_widget/use_page_title_text.dart';
 import 'package:cream_soda/common_widget/use_text_form_field.dart';
-import 'package:cream_soda/constants/theme/color_schemes.g.dart';
 import 'package:cream_soda/constants/theme/use_size.dart';
 import 'package:cream_soda/join/components/info_text.dart';
 import 'package:cream_soda/join/join_provider.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class JoinForm extends StatefulWidget {

@@ -81,7 +81,7 @@ class JoinAuthProvider extends ChangeNotifier {
   Future<void> sendCode(BuildContext context, String pin) async {
     var response = await repository.sendCode(
         email: state.email, code: pin);
-    var responseBody = jsonDecode(response.body);
+    // var responseBody = jsonDecode(response.body);
 
     if (response.statusCode == 200) {
       state.verified = CodeStatusEnum.SUCCESS;

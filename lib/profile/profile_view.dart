@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cream_soda/common_widget/picture_action_sheet.dart';
 import 'package:cream_soda/common_widget/use_alert_dialog.dart';
 import 'package:cream_soda/common_widget/use_elevated_button.dart';
@@ -17,10 +15,10 @@ import 'package:provider/provider.dart';
 import 'profile_provider.dart';
 
 class ProfilePage extends StatefulWidget {
-  String? email;
-  String? password;
+  final String? email;
+  final String? password;
 
-  ProfilePage({this.email, this.password, super.key});
+  const ProfilePage({this.email, this.password, super.key});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();

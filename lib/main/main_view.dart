@@ -19,8 +19,6 @@ class MainPage extends StatelessWidget {
   }
 
   Widget _buildPage(BuildContext context) {
-    final provider = context.watch<MainProvider>();
-    final state = provider.state;
 
     return SafeArea(
       child: Scaffold(
