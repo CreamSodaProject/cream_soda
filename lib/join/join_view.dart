@@ -1,4 +1,5 @@
 import 'package:cream_soda/common_widget/use_elevated_button.dart';
+import 'package:cream_soda/constants/router/move.dart';
 import 'package:cream_soda/constants/theme/color_schemes.g.dart';
 import 'package:cream_soda/constants/theme/use_size.dart';
 import 'package:cream_soda/join/components/join_form.dart';
@@ -25,7 +26,6 @@ class _JoinPageState extends State<JoinPage> {
 
   Widget _buildPage(BuildContext context) {
     final provider = context.watch<JoinProvider>();
-    final state = provider.state;
 
     return SafeArea(
         child: Scaffold(
@@ -34,7 +34,7 @@ class _JoinPageState extends State<JoinPage> {
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back_ios),
                 onPressed: () {
-                  Navigator.popAndPushNamed(context, "/main");
+                  Navigator.popAndPushNamed(context, Move.mainPage);
                 },
               ),),
           body: Padding(
@@ -44,14 +44,14 @@ class _JoinPageState extends State<JoinPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  JoinForm(provider: provider, state: state),
+                  JoinForm(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text("계정이 있으신가요?"),
                       TextButton(
                         onPressed: () {
-                          provider.goLogin(context);
+                          Navigator.pushNamed(context, Move.loginPage);
                         },
                         child: Text("로그인",
                             style: TextStyle(color: lightColorScheme.primary)),

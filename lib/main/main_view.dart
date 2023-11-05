@@ -1,5 +1,6 @@
 import 'package:cream_soda/common_widget/use_elevated_button.dart';
 import 'package:cream_soda/common_widget/use_outlined_button.dart';
+import 'package:cream_soda/constants/router/move.dart';
 import 'package:cream_soda/constants/theme/color_schemes.g.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -44,10 +45,12 @@ class MainPage extends StatelessWidget {
                   UseOutlinedButton(
                       title: "회원가입",
                       onPressed: () {
-                        Navigator.pushNamed(context, "/join");
+                        Navigator.pushNamed(context, Move.joinPage);
 
                       }),
-                  UseElevatedButton(title: "로그인", onPressed: () {}),
+                  UseElevatedButton(title: "로그인", onPressed: () {
+                    Navigator.pushNamed(context, Move.loginPage);
+                  }),
                 ],
               ))),
     );

@@ -6,6 +6,7 @@ import 'package:cream_soda/common_widget/use_elevated_button.dart';
 import 'package:cream_soda/common_widget/use_outlined_button.dart';
 import 'package:cream_soda/common_widget/use_page_title_text.dart';
 import 'package:cream_soda/common_widget/use_text_form_field.dart';
+import 'package:cream_soda/constants/router/move.dart';
 import 'package:cream_soda/constants/theme/color_schemes.g.dart';
 import 'package:cream_soda/constants/theme/use_size.dart';
 import 'package:flutter/cupertino.dart';
@@ -148,7 +149,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     confirmFunction: () {
                                       Navigator.pop(context);
                                       Navigator.popAndPushNamed(
-                                          context, '/main');
+                                          context, Move.mainPage);
                                     },
                                     cancelFunction: () {
                                       Navigator.pop(context);
