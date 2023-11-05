@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:cream_soda/common_widget/use_confirm_dialog.dart';
+import 'package:cream_soda/constants/router/move.dart';
+import 'package:cream_soda/constants/theme/color_schemes.g.dart';
 import 'package:cream_soda/repository/user_repository.dart';
 import 'package:flutter/material.dart';
 
@@ -10,15 +12,6 @@ class JoinProvider extends ChangeNotifier {
   final state = JoinState();
   final repository = UserRepository();
 
-  void changeLengthInfoColor(value) {
-    state.checkLengthColor = value;
-    notifyListeners();
-  }
-
-  void changeRegInfoColor(value) {
-    state.checkRegColor = value;
-    notifyListeners();
-  }
 
   bool isPasswordValid(String password) {
     // 정규식 패턴: 최소 8자 이상, 숫자와 특수 문자 필수 포함
@@ -38,12 +31,11 @@ class JoinProvider extends ChangeNotifier {
     if (!context.mounted) return;
 
     if (response.statusCode == 200) {
-      Navigator.pushNamed(context, "/joinAuth", arguments: {
+      Navigator.pushNamed(context, Move.joinAuthPage, arguments: {
         'email': state.addressController.text,
         'password': state.passwordController.text
       });
     } else {
-      print("object : ${responseBody['code']}");
       var detail = responseBody['detail'];
       showDialog<String>(
           context: context,
@@ -57,47 +49,67 @@ class JoinProvider extends ChangeNotifier {
     }
   }
 
-  void changeEmailIconColor(color) {
-    state.emailIconColor = color;
+  void changeEmailOnTapCheck(bool check) {
+    state.emailOnTapCheck = check;
+    state.passwordOnTapCheck = !check;
+    state.passwordCheckOnTapCheck = !check;
+    if(check) {
+      state.emailIconColor = lightColorScheme.primary;
+      state.passwordIconColor = lightColorScheme.outline;
+      state.passwordCheckIconColor = lightColorScheme.outline;
+    } else {
+      state.emailIconColor = lightColorScheme.outline;
+    }
     notifyListeners();
   }
 
-  void changePasswordIconColor(color) {
-    state.passwordIconColor = color;
+  void changePasswordOnTapCheck(bool check) {
+    state.passwordOnTapCheck = check;
+    state.emailOnTapCheck = !check;
+    state.passwordCheckOnTapCheck = !check;
+
+    if(check) {
+      state.passwordIconColor = lightColorScheme.primary;
+      state.emailIconColor = lightColorScheme.outline;
+      state.passwordCheckIconColor = lightColorScheme.outline;
+    } else {
+      state.passwordIconColor = lightColorScheme.outline;
+    }
     notifyListeners();
   }
 
-  void changePasswordCheckIconColor(color) {
-    state.passwordCheckIconColor = color;
+  void changePasswordCheckOnTapCheck(bool check) {
+    state.passwordCheckOnTapCheck = check;
+    state.emailOnTapCheck = !check;
+    state.passwordOnTapCheck = !check;
+    if(check) {
+      state.passwordCheckIconColor = lightColorScheme.primary;
+      state.emailIconColor = lightColorScheme.outline;
+      state.passwordIconColor = lightColorScheme.outline;
+    } else {
+      state.passwordCheckIconColor = lightColorScheme.outline;
+    }
     notifyListeners();
   }
 
-  void changePasswordIcon(icon) {
-    state.passwordIcon = icon;
+  void changePasswordObscureTextCheck(bool check) {
+    state.passwordObscureTextCheck = check;
+    if(check) {
+      state.passwordIcon = Icons.visibility_off;
+    } else {
+      state.passwordIcon = Icons.visibility;
+    }
     notifyListeners();
   }
 
-  void changePasswordCheckIcon(icon) {
-    state.passwordCheckIcon = icon;
+  void changePasswordCheckObscureTextCheck(bool check) {
+    state.passwordCheckObscureTextCheck = check;
+    if(check) {
+      state.passwordCheckIcon = Icons.visibility_off;
+    } else {
+      state.passwordCheckIcon = Icons.visibility;
+    }
     notifyListeners();
   }
 
-  void changeEmailOnTapCheck(bool value) {
-    state.emailOnTapCheck = value;
-    notifyListeners();
-  }
-
-  void changePasswordOnTapCheck(bool value) {
-    state.passwordOnTapCheck = value;
-    notifyListeners();
-  }
-
-  void changePasswordCheckOnTapCheck(bool value) {
-    state.passwordCheckOnTapCheck = value;
-    notifyListeners();
-  }
-
-  void goLogin(BuildContext context) {
-    Navigator.pushNamed(context, "/login");
-  }
 }

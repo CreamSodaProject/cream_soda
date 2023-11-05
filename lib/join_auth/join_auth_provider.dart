@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:cream_soda/common_widget/use_confirm_dialog.dart';
 import 'package:cream_soda/constants/enum/code_status_enum.dart';
+import 'package:cream_soda/constants/router/move.dart';
 import 'package:cream_soda/repository/user_repository.dart';
 import 'package:flutter/material.dart';
 
@@ -69,7 +70,7 @@ class JoinAuthProvider extends ChangeNotifier {
           builder: (BuildContext context) =>
               UseConfirmDialog(
                 title: "전송 실패",
-                content: detail ?? "코드 재전송이 완료되었습니다. 관리자에게 문의하세요",
+                content: detail ?? "관리자에게 문의하세요",
                 onPressed: () {
                   Navigator.pop(context);
                 },
@@ -80,12 +81,12 @@ class JoinAuthProvider extends ChangeNotifier {
   Future<void> sendCode(BuildContext context, String pin) async {
     var response = await repository.sendCode(
         email: state.email, code: pin);
-    var responseBody = jsonDecode(response.body);
+    // var responseBody = jsonDecode(response.body);
 
     if (response.statusCode == 200) {
       state.verified = CodeStatusEnum.SUCCESS;
       notifyListeners();
-      Navigator.pushNamed(context, "/profile", arguments: {
+      Navigator.pushNamed(context, Move.profilePage, arguments: {
         'email': state.email,
         'password': state.password
       });

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cream_soda/common_widget/use_confirm_dialog.dart';
+import 'package:cream_soda/constants/router/move.dart';
 import 'package:cream_soda/repository/user_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -67,7 +68,7 @@ class ProfileProvider extends ChangeNotifier {
         builder: (context) => UseConfirmDialog(
             title: "회원가입 성공",
             content: "회원가입에 성공하였습니다.",
-            onPressed: () => Navigator.popAndPushNamed(context, "/login")),
+            onPressed: () => Navigator.popAndPushNamed(context, Move.loginPage)),
       );
     } else {
       showDialog(

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:cream_soda/constants/http_setting/use_http.dart';
 import 'package:http/http.dart';
@@ -42,10 +41,22 @@ class UserRepository {
       scheme: scheme,
       host: baseUrl,
       port: basePort,
-      path: '/user/join', // 경로
+      path: 'user/join', // 경로
     ).toString();
     return await post(Uri.parse(encodedUrl),
         headers: headers,
         body: jsonEncode({'email': email, 'password': password, 'name': name, 'imageFile': imageFile}));
+  }
+
+  Future<Response> login({required String email, required String password}) async {
+    String encodedUrl = Uri(
+      scheme: scheme,
+      host: baseUrl,
+      port: basePort,
+      path: 'user/login', // 경로
+    ).toString();
+    return await post(Uri.parse(encodedUrl),
+        headers: headers,
+        body: jsonEncode({'email': email, 'password': password}));
   }
 }

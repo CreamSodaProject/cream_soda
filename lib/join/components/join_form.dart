@@ -1,21 +1,15 @@
 import 'package:cream_soda/common_widget/use_elevated_button.dart';
 import 'package:cream_soda/common_widget/use_page_title_text.dart';
 import 'package:cream_soda/common_widget/use_text_form_field.dart';
-import 'package:cream_soda/constants/theme/color_schemes.g.dart';
-import 'package:cream_soda/constants/theme/other_color.dart';
 import 'package:cream_soda/constants/theme/use_size.dart';
 import 'package:cream_soda/join/components/info_text.dart';
 import 'package:cream_soda/join/join_provider.dart';
-import 'package:cream_soda/join/join_state.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class JoinForm extends StatefulWidget {
-  JoinProvider provider;
-  JoinState state;
 
-  JoinForm({required this.state, required this.provider, super.key});
+  JoinForm({super.key});
 
   @override
   State<JoinForm> createState() => _JoinFormState();
@@ -28,7 +22,7 @@ class _JoinFormState extends State<JoinForm> {
     final state = provider.state;
 
     return Form(
-      key: widget.state.formKey,
+      key: state.formKey,
       child: Column(
         children: [
           UsePageTitleText(
@@ -36,7 +30,7 @@ class _JoinFormState extends State<JoinForm> {
           ),
           const SizedBox(height: gap35),
           UseTextFormField(
-            controller: widget.state.addressController,
+            controller: state.addressController,
             hintText: "이메일 주소",
             keyboardType: TextInputType.emailAddress,
             validator: (value) {
@@ -50,37 +44,25 @@ class _JoinFormState extends State<JoinForm> {
             },
             textInputAction: TextInputAction.next,
             onEditingComplete: () => FocusScope.of(context).nextFocus(),
-            suffixIcon: Icon(CupertinoIcons.clear_circled_solid,
-                color: state.emailOnTapCheck ? lightColorScheme.primary : lightColorScheme.outline, size: size18),
-            suffixIconOnPressed: state.emailOnTapCheck ? () {
-              widget.state.addressController.clear();
-            } : null,
+            suffixIcon: Icon(
+              CupertinoIcons.clear_circled_solid,
+              color: state.emailIconColor,
+              size: size18,
+            ),
+            suffixIconOnPressed: state.emailOnTapCheck
+                ? () {
+                    state.addressController.clear();
+                  }
+                : null,
             onTap: () {
-              provider.changeEmailIconColor(lightColorScheme.primary);
               provider.changeEmailOnTapCheck(true);
-              provider.changePasswordOnTapCheck(false);
-              provider.changePasswordCheckOnTapCheck(false);
             },
           ),
           UseTextFormField(
-            controller: widget.state.passwordController,
+            controller: state.passwordController,
             hintText: "비밀번호",
             keyboardType: TextInputType.visiblePassword,
             obscureTextCheck: state.passwordObscureTextCheck,
-            onChanged: (p0) {
-              if (p0.length < 8) {
-                provider.changeLengthInfoColor(lightColorScheme.outline);
-                provider.changeRegInfoColor(lightColorScheme.outline);
-                return;
-              }
-              provider.changeLengthInfoColor(rightColor);
-
-              if (!provider.isPasswordValid(p0)) {
-                provider.changeRegInfoColor(lightColorScheme.outline);
-                return;
-              }
-              provider.changeRegInfoColor(rightColor);
-            },
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return "비밀번호를 입력해주세요.";
@@ -95,64 +77,52 @@ class _JoinFormState extends State<JoinForm> {
             },
             textInputAction: TextInputAction.next,
             onEditingComplete: () => FocusScope.of(context).nextFocus(),
-            suffixIcon: Icon(state.passwordIcon,
-                color: state.passwordOnTapCheck ? lightColorScheme.primary : lightColorScheme.outline,
-                size: size18,),
-            suffixIconOnPressed: state.passwordOnTapCheck ? () {
-              if(state.passwordObscureTextCheck) {
-                provider.changePasswordIcon(Icons.visibility);
-                state.passwordObscureTextCheck = false;
-              } else {
-                provider.changePasswordIcon(Icons.visibility_off);
-                state.passwordObscureTextCheck = true;
-              }
-            } : null,
+            suffixIcon: Icon(
+              state.passwordIcon,
+              color: state.passwordIconColor,
+              size: size18,
+            ),
+            suffixIconOnPressed: state.passwordOnTapCheck
+                ? () {
+                    provider.changePasswordObscureTextCheck(!state.passwordObscureTextCheck);
+                  }
+                : null,
             onTap: () {
-              provider.changeEmailIconColor(lightColorScheme.primary);
-              provider.changeEmailOnTapCheck(false);
               provider.changePasswordOnTapCheck(true);
-              provider.changePasswordCheckOnTapCheck(false);
             },
           ),
           UseTextFormField(
-            controller: widget.state.checkPasswordController,
+            controller: state.checkPasswordController,
             hintText: "비밀번호 확인",
             keyboardType: TextInputType.visiblePassword,
             obscureTextCheck: state.passwordCheckObscureTextCheck,
             validator: (value) {
-              if (widget.state.passwordController.text != value) {
+              if (state.passwordController.text != value) {
                 return "비밀번호가 일치하지 않습니다.";
               }
               return null;
             },
             suffixIcon: Icon(state.passwordCheckIcon,
-                color: state.passwordCheckOnTapCheck ? lightColorScheme.primary : lightColorScheme.outline,
+                color: state.passwordCheckIconColor,
                 size: size18),
-            suffixIconOnPressed: state.passwordCheckOnTapCheck ? () {
-              if(state.passwordCheckObscureTextCheck) {
-                provider.changePasswordCheckIcon(Icons.visibility);
-                state.passwordCheckObscureTextCheck = false;
-              } else {
-                provider.changePasswordCheckIcon(Icons.visibility_off);
-                state.passwordCheckObscureTextCheck = true;
-              }
-            } : null,
+            suffixIconOnPressed: state.passwordCheckOnTapCheck
+                ? () {
+                      provider.changePasswordCheckObscureTextCheck(!state.passwordCheckObscureTextCheck);
+                  }
+                : null,
             onTap: () {
-              provider.changeEmailIconColor(lightColorScheme.primary);
-              provider.changeEmailOnTapCheck(false);
-              provider.changePasswordOnTapCheck(false);
               provider.changePasswordCheckOnTapCheck(true);
             },
           ),
           const SizedBox(height: gap15),
-          InfoText(title: "8자 이상 입력", color: widget.state.checkLengthColor),
+          InfoText(title: "8자 이상 입력", color: state.checkLengthColor),
           const SizedBox(height: gap5),
-          InfoText(title: "숫자, 특수 문자 필수 포함", color: widget.state.checkRegColor),
+          InfoText(title: "숫자, 특수 문자 필수 포함", color: state.checkRegColor),
           const SizedBox(height: defaultVerticalGap),
           UseElevatedButton(
             title: "다음",
             onPressed: () {
-              if (widget.state.formKey.currentState!.validate()) {
+              if (state.formKey.currentState!.validate()) {
                 provider.sendCode(context);
               }
             },

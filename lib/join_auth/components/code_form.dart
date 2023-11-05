@@ -2,9 +2,11 @@ import 'package:cream_soda/constants/theme/color_schemes.g.dart';
 import 'package:cream_soda/join_auth/join_auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
+import 'package:provider/provider.dart';
 
 class CodeForm extends StatefulWidget {
-  const CodeForm({super.key});
+
+   CodeForm({super.key});
 
   @override
   State<CodeForm> createState() => _CodeFormState();
@@ -13,8 +15,7 @@ class CodeForm extends StatefulWidget {
 class _CodeFormState extends State<CodeForm> {
   @override
   Widget build(BuildContext context) {
-
-    final provider = JoinAuthProvider();
+    final provider = context.watch<JoinAuthProvider>();
     final state = provider.state;
 
     return Form(
