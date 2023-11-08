@@ -1,6 +1,7 @@
 import 'package:cream_soda/common_widget/use_elevated_button.dart';
 import 'package:cream_soda/common_widget/use_page_title_text.dart';
 import 'package:cream_soda/common_widget/use_text_form_field.dart';
+import 'package:cream_soda/constants/router/move.dart';
 import 'package:cream_soda/constants/theme/use_size.dart';
 import 'package:cream_soda/join/components/info_text.dart';
 import 'package:cream_soda/join/join_provider.dart';
@@ -67,6 +68,7 @@ class _JoinFormState extends State<JoinForm> {
               if (value == null || value.isEmpty) {
                 return "비밀번호를 입력해주세요.";
               }
+
               if (value.length < 8) {
                 return "비밀번호는 8자 이상이어야 합니다.";
               }
@@ -74,6 +76,20 @@ class _JoinFormState extends State<JoinForm> {
                 return "비밀번호는 숫자, 특수 문자를 필수로 포함해야 합니다.";
               }
               return null;
+            },
+            onChanged: (p0) {
+              if (p0.length < 8) {
+                provider.changePasswordLengthColor(false);
+                provider.changePasswordRegColor(false);
+                return;
+              }
+              provider.changePasswordLengthColor(true);
+
+              if (!provider.isPasswordValid(p0)) {
+                provider.changePasswordRegColor(false);
+                return;
+              }
+              provider.changePasswordRegColor(true);
             },
             textInputAction: TextInputAction.next,
             onEditingComplete: () => FocusScope.of(context).nextFocus(),
@@ -123,7 +139,11 @@ class _JoinFormState extends State<JoinForm> {
             title: "다음",
             onPressed: () {
               if (state.formKey.currentState!.validate()) {
-                provider.sendCode(context);
+                Navigator.pushNamed(context, Move.joinAuthPage, arguments: {
+                  'email': state.addressController.text,
+                  'password': state.passwordController.text
+                });
+              //  provider.sendCode(context);
               }
             },
           )

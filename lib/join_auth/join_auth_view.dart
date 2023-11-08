@@ -10,10 +10,8 @@ import 'package:provider/provider.dart';
 import 'join_auth_provider.dart';
 
 class JoinAuthPage extends StatefulWidget {
-  String? email;
-  String? password;
 
-  JoinAuthPage({ this.email, this.password, super.key});
+  JoinAuthPage({super.key});
 
   @override
   State<JoinAuthPage> createState() => _JoinAuthPageState();
@@ -24,13 +22,18 @@ class _JoinAuthPageState extends State<JoinAuthPage> {
 
   @override
   Widget build(BuildContext context) {
+    Map<String, String> args = ModalRoute.of(context)!.settings.arguments as Map<String, String>;
+    final email =args['email'];
+    final password = args['password'];
+
     return ChangeNotifierProvider(
-      create: (BuildContext context) => JoinAuthProvider()..init(widget.email, widget.password),
+      create: (BuildContext context) => JoinAuthProvider()..init(context, email, password),
       builder: (context, child) => _buildPage(context),
     );
   }
 
   Widget _buildPage(BuildContext context) {
+
     final provider = context.watch<JoinAuthProvider>();
     final state = provider.state;
 
@@ -83,9 +86,7 @@ class _JoinAuthPageState extends State<JoinAuthPage> {
               UseElevatedButton(
                 title: "재전송",
                 onPressed: () {
-                  provider.resetCountdown();
-                  provider.startCountdown();
-                  provider.sendEmail(context);
+                  provider.reSendEmail(context);
                 },
                 width: 100,
               )
