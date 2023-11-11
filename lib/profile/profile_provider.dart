@@ -18,6 +18,7 @@ class ProfileProvider extends ChangeNotifier {
   void init(String? email, String? password) {
     state.email = email ?? "";
     state.password = password ?? "";
+    notifyListeners();
   }
 
   Future getImage(ImageSource imageSource) async {
@@ -39,7 +40,7 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   bool isNameValid(String password) {
-    // 정규식 패턴: 최소 8자 이상, 숫자와 특수 문자 필수 포함
+    // 정규식 패턴: 최소 2자리, 최대 10자리
     const pattern = r'^[a-zA-Zㄱ-ㅎ|ㅏ-ㅣ|가-힣0-9]{2,10}$';
     final regExp = RegExp(pattern);
 
@@ -49,6 +50,7 @@ class ProfileProvider extends ChangeNotifier {
   Future<void> join(BuildContext context) async {
     String base64string = "";
 
+    // TODO : 기본 이미지 추가 필요
     if (state.imageFile != null) {
       Uint8List imageBytes = await state.imageFile!.readAsBytes();
       base64string = base64.encode(imageBytes);

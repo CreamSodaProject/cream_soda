@@ -1,8 +1,5 @@
-import 'dart:convert';
-
-import 'package:cream_soda/common_widget/use_confirm_dialog.dart';
-import 'package:cream_soda/constants/router/move.dart';
 import 'package:cream_soda/constants/theme/color_schemes.g.dart';
+import 'package:cream_soda/constants/theme/other_color.dart';
 import 'package:cream_soda/repository/user_repository.dart';
 import 'package:flutter/material.dart';
 
@@ -22,31 +19,22 @@ class JoinProvider extends ChangeNotifier {
     return regExp.hasMatch(password);
   }
 
-  Future<void> sendCode(BuildContext context) async {
-    var response =
-        await repository.sendEmail(email: state.addressController.text);
-
-    var responseBody = jsonDecode(response.body);
-
-    if (!context.mounted) return;
-
-    if (response.statusCode == 200) {
-      Navigator.pushNamed(context, Move.joinAuthPage, arguments: {
-        'email': state.addressController.text,
-        'password': state.passwordController.text
-      });
+  void changePasswordLengthColor(bool check) {
+    if(check) {
+      state.checkLengthColor = rightColor;
     } else {
-      var detail = responseBody['detail'];
-      showDialog<String>(
-          context: context,
-          builder: (BuildContext context) => UseConfirmDialog(
-                title: "회원가입 실패",
-                content: detail ?? "회원가입에 실패했습니다.",
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ));
+      state.checkLengthColor = lightColorScheme.outline;
     }
+    notifyListeners();
+  }
+
+  void changePasswordRegColor(bool check) {
+    if(check) {
+      state.checkRegColor = rightColor;
+    } else {
+      state.checkRegColor = lightColorScheme.outline;
+    }
+    notifyListeners();
   }
 
   void changeEmailOnTapCheck(bool check) {

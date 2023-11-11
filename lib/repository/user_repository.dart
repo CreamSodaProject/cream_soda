@@ -59,4 +59,16 @@ class UserRepository {
         headers: headers,
         body: jsonEncode({'email': email, 'password': password}));
   }
+
+  Future<Response> sendSparePassword({required String email}) async {
+    String encodedUrl = Uri(
+      scheme: scheme,
+      host: baseUrl,
+      port: basePort,
+      path: 'send/password', // 경로
+    ).toString();
+    return await post(Uri.parse(encodedUrl),
+        headers: headers,
+        body: jsonEncode({'email': email}));
+  }
 }

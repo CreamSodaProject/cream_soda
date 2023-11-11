@@ -12,6 +12,7 @@ class InfoText extends StatefulWidget {
 }
 
 class _InfoTextState extends State<InfoText> {
+
   @override
   Widget build(BuildContext context) {
 
