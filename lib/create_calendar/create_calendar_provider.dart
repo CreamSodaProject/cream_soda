@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cream_soda/common_widget/use_confirm_dialog.dart';
+import 'package:cream_soda/constants/router/move.dart';
 import 'package:cream_soda/repository/calendar_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -52,9 +53,8 @@ class CreateCalendarProvider extends ChangeNotifier {
     var responseBody = jsonDecode(response.body);
     var detail = responseBody['detail'];
 
-    // TODO : 추가 필요
     if (response.statusCode == 200) {
-      print(responseBody);
+      Navigator.popAndPushNamed(context, Move.navigatorPage);
     } else {
       showDialog(
         context: context,

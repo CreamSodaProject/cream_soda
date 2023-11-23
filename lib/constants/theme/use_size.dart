@@ -1,3 +1,4 @@
+const font10 = 10.0;
 const font12 = 12.0;
 const font14 = 14.0;
 const font16 = 16.0;
