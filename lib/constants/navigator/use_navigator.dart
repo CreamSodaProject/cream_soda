@@ -1,4 +1,4 @@
-import 'package:cream_soda/calendar/calendar_view.dart';
+import 'package:cream_soda/view/calendar/calendar_view.dart';
 import 'package:cream_soda/constants/theme/color_schemes.g.dart';
 import 'package:flutter/material.dart';
 
